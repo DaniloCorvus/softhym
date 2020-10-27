@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgenteExternoController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\GenericoController;
 use App\Http\Controllers\MonedaController;
@@ -27,4 +28,8 @@ Route::group(['middleware' => ['cors']], function () {
 
     //Cuentas bancarias
     Route::get('cuentasbancarias/buscar-cuentas-bancarias-por-moneda', [CuentaBancariaController::class, 'buscar']);
+
+    //Agentes externos
+    // https://softwarehym.com/customback/php/agentesexternos/cambiar_estado_agente_externo.php
+    Route::post('agentesexternos/cambiar-estado-agente-externo', [AgenteExternoController::class, 'destroy']);
 });
