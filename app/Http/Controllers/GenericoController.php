@@ -12,14 +12,14 @@ class GenericoController extends Controller
     public function tipoDocumentosExtranjeros()
     {
         if (request()->wantsJson()) {
-            return response()->json(DocumentoNacional::all());
+            return response()->json(DocumentoExtranjero::all());
         }
     }
 
     public function tipoDocumentoNacionales()
     {
         if (request()->wantsJson()) {
-            return response()->json(DocumentoExtranjero::all());
+            return response()->json(DocumentoNacional::all());
         }
     }
 

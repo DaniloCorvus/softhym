@@ -14,7 +14,7 @@ class DocumentoNacionalController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**

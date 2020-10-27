@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FuncionarioController;
+use App\Http\Controllers\GenericoController;
 use App\Http\Controllers\MonedaController;
 use App\Http\Controllers\PaisController;
 use Illuminate\Support\Facades\Auth;
