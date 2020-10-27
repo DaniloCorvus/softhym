@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\AgenteExternoController;
+use App\Http\Controllers\CambioController;
+use App\Http\Controllers\FomapagoController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\GenericoController;
 use App\Http\Controllers\MonedaController;
 use App\Http\Controllers\PaisController;
+use App\Http\Controllers\TerceroController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -28,8 +30,12 @@ Route::group(['middleware' => ['cors']], function () {
 
     //Cuentas bancarias
     Route::get('cuentasbancarias/buscar-cuentas-bancarias-por-moneda', [CuentaBancariaController::class, 'buscar']);
+    //Terceros
+    Route::get('terceros-filter', [TerceroController::class, 'filter']);
+    Route::get('terceros', [TerceroController::class, 'index']);
+    //Forma de pago 
+    Route::get('foma-pago', [FomapagoController::class, 'index']);
 
-    //Agentes externos
-    // https://softwarehym.com/customback/php/agentesexternos/cambiar_estado_agente_externo.php
-    Route::post('agentesexternos/cambiar-estado-agente-externo', [AgenteExternoController::class, 'destroy']);
+    //Forma de pago 
+    Route::post('cambios', [CambioController::class, 'store']);
 });

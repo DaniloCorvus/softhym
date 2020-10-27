@@ -8,4 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class Cambio extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        // 'Id_Cambio'
+        'Tipo',
+        'Codigo',
+        'Fecha',
+        'Id_Caja',
+        'Id_Oficina',
+        'Moneda_Origen',
+        'Moneda_Destino',
+        'Tasa',
+        'Valor_Origen',
+        'Valor_Destino',
+        'TotalPago',
+        'Vueltos',
+        'Recibido',
+        'Estado',
+        'Identificacion_Funcionario',
+        'Tercero_id',
+        'fomapago_id'
+    ];
 }
