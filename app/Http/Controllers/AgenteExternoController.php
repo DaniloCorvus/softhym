@@ -78,8 +78,11 @@ class AgenteExternoController extends Controller
      * @param  \App\Models\AgenteExterno  $agenteExterno
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AgenteExterno $agenteExterno)
+    public function destroy(Request $Request)
     {
-        //
+        $agente = AgenteExterno::where('Id_Agente_Externo', request()->get('id_agente'))->first();
+        $agente->Estado = ($agente->Estado == 'Activo') ? 'Inactivo' : 'Activo';
+        $agente->save();
+        return response()->json(['data' => $agente]);
     }
 }
