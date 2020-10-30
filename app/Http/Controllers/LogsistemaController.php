@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Configuracion;
+use App\Models\Logsistema;
 use Illuminate\Http\Request;
 
-class ConfiguracionController extends Controller
+class LogsistemaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,16 +35,16 @@ class ConfiguracionController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Configuracion  $configuracion
+     * @param  \App\Models\Logsistema  $logsistema
      * @return \Illuminate\Http\Response
      */
-    public function show(Configuracion $configuracion)
+    public function show(Logsistema $logsistema)
     {
         //
     }
@@ -52,10 +52,10 @@ class ConfiguracionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Configuracion  $configuracion
+     * @param  \App\Models\Logsistema  $logsistema
      * @return \Illuminate\Http\Response
      */
-    public function edit(Configuracion $configuracion)
+    public function edit(Logsistema $logsistema)
     {
         //
     }
@@ -64,10 +64,10 @@ class ConfiguracionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Configuracion  $configuracion
+     * @param  \App\Models\Logsistema  $logsistema
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Configuracion $configuracion)
+    public function update(Request $request, Logsistema $logsistema)
     {
         //
     }
@@ -75,10 +75,10 @@ class ConfiguracionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Configuracion  $configuracion
+     * @param  \App\Models\Logsistema  $logsistema
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Configuracion $configuracion)
+    public function destroy(Logsistema $logsistema)
     {
         //
     }
