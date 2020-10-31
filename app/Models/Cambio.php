@@ -32,4 +32,9 @@ class Cambio extends Model
         'Tercero_id',
         'fomapago_id'
     ];
+
+    public function devolucioncambios()
+    {
+        return $this->hasMany(Devolucioncambio::class, 'cambio_id', 'Id_Cambio');
+    }
 }

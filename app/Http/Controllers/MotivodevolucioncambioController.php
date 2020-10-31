@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MotivoDevolucion;
 use App\Models\Motivodevolucioncambio;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class MotivodevolucioncambioController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Motivodevolucioncambio::all());
     }
 
     /**
@@ -35,7 +36,10 @@ class MotivodevolucioncambioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = json_decode(request()->get('data'));
+        return response()->json(Motivodevolucioncambio::create([
+            'nombre' => $data->nombre
+        ]));
     }
 
     /**
@@ -80,6 +84,6 @@ class MotivodevolucioncambioController extends Controller
      */
     public function destroy(Motivodevolucioncambio $motivodevolucioncambio)
     {
-        //
+        return response()->json(Motivodevolucioncambio::destroy(request()->get('id')));
     }
 }

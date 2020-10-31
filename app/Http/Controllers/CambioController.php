@@ -21,6 +21,32 @@ class CambioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+//     SELECT
+//     Id_Cambio,
+//     Codigo,
+//     Fecha,
+//     Id_Caja,
+//     Id_Oficina,
+//     (IFNULL( (SELECT Nombre FROM Moneda WHERE Id_Moneda = Moneda_Origen AND Estado = 'Activa'), 'Moneda Inexistente')) AS Moneda_Origen,
+//     (IFNULL( (SELECT Nombre FROM Moneda WHERE Id_Moneda = Moneda_Destino AND Estado = 'Activa'), 'Moneda Inexistente')) AS Moneda_Destino,
+//     (IFNULL( (SELECT Codigo FROM Moneda WHERE Id_Moneda = Moneda_Origen AND Estado = 'Activa'), 'Codigo Inexistente')) AS Codigo_Moneda_Origen,
+//     (IFNULL( (SELECT Codigo FROM Moneda WHERE Id_Moneda = Moneda_Destino AND Estado = 'Activa'), 'Codigo Inexistente')) AS Codigo_Moneda_Destino,
+//     Tasa,
+//     (Valor_Destino - (SELECT SUM(valor_recibido) FROM devolucioncambios WHERE cambio_id =	34))  As Valor_Destino,
+//     Valor_Origen,
+//     TotalPago,
+//     Vueltos,
+//     Recibido,
+//     Tipo,
+    
+//     T.Nombre,
+//     T.Id_Tercero
+    
+// FROM Cambio c
+// LEFT JOIN Tercero AS T ON c.Tercero_id = T.Id_Tercero
+// WHERE Id_Cambio = 34
+
     public function index()
     {
         try {
@@ -121,16 +147,7 @@ class CambioController extends Controller
      */
     public function update(Request $request, Cambio $cambio)
     {
-        $data = json_decode(request()->get('data'));
-        $devolucion =     Devolucioncambio::create([
-            'hora' => Carbon::now(),
-            'observacion' => ($data->Observacion) ? $data->Observacion : '',
-            'motivodevolucioncambios_id' => $data->Motivo,
-            'valor_recibido' => $data->Valor_Devolver,
-            'valor_entregado' => $data->Valor_Devuelto,
-        ]);
-
-        return response()->json($devolucion);
+      
     }
 
     /**

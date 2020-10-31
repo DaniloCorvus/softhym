@@ -14,5 +14,6 @@ class Devolucioncambio extends Model
         'motivodevolucioncambios_id',
         'valor_recibido',
         'valor_entregado',
+        'cambio_id'
     ];
 }

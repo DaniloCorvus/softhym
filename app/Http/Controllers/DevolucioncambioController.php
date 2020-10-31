@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cambio;
 use App\Models\Devolucioncambio;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+
+use function GuzzleHttp\Promise\all;
 
 class DevolucioncambioController extends Controller
 {
@@ -35,7 +39,19 @@ class DevolucioncambioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $data = json_decode(request()->get('data'));
+        // return response()->json($data->Id_Cambio);
+        $devolucion =     Devolucioncambio::create([
+            'hora' => Carbon::now(),
+            'cambio_id' => $data->Id_Cambio,
+            'observacion' => ($data->Observacion) ? $data->Observacion : '',
+            'motivodevolucioncambios_id' => $data->Motivo,
+            'valor_recibido' => $data->Valor_Devolver,
+            'valor_entregado' => $data->Valor_Devuelto,
+        ]);
+
+        return response()->json($devolucion);
     }
 
     /**
@@ -44,9 +60,9 @@ class DevolucioncambioController extends Controller
      * @param  \App\Models\Devolucioncambio  $devolucioncambio
      * @return \Illuminate\Http\Response
      */
-    public function show(Devolucioncambio $devolucioncambio)
+    public function show(Request $request, $cambio)
     {
-        //
+        return response()->json(Cambio::find($cambio)->devolucioncambios()->get());
     }
 
     /**

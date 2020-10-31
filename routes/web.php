@@ -2,13 +2,16 @@
 
 use App\Http\Controllers\CambioController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\DevolucioncambioController;
 use App\Http\Controllers\FomapagoController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\GenericoController;
 use App\Http\Controllers\MonedaController;
+use App\Http\Controllers\MotivodevolucioncambioController;
 use App\Http\Controllers\PaisController;
 use App\Http\Controllers\TerceroController;
 use App\Models\Configuracion;
+use App\Models\Devolucioncambio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -46,9 +49,19 @@ Route::group(['middleware' => ['cors']], function () {
     //Forma de pago 
     Route::get('foma-pago', [FomapagoController::class, 'index']);
 
-    //CAmbios
+    //Cambios
     Route::post('cambios', [CambioController::class, 'store']);
     Route::get('cambios', [CambioController::class, 'index']);
     Route::get('print-cambio', [CambioController::class, 'printCambio']);
     Route::post('custom/cambios/update', [CambioController::class, 'update']);
+
+
+
+    //Devoluciones
+    Route::get('motivos-devolucion', [MotivodevolucioncambioController::class, 'index']);
+    Route::post('motivos-devolucion', [MotivodevolucioncambioController::class, 'store']);
+    Route::post('motivos-devolucion/{id}', [MotivodevolucioncambioController::class, 'destroy']);
+
+    Route::post('devolucion/store', [DevolucioncambioController::class, 'store']);
+    Route::get('devoluciones/show/{Id_Cambio}', [DevolucioncambioController::class, 'show']);
 });
