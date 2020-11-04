@@ -10,8 +10,10 @@ use App\Http\Controllers\MonedaController;
 use App\Http\Controllers\MotivodevolucioncambioController;
 use App\Http\Controllers\PaisController;
 use App\Http\Controllers\TerceroController;
+use App\Models\Cambio;
 use App\Models\Configuracion;
 use App\Models\Devolucioncambio;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +30,13 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/pass', function () {
 //     return Hash::make('password');
 // });
+
+
+Route::get('/tess', function () {
+    $cambio = Cambio::with('tercero')->findOrFail(request()->get('id'));
+    // $pdf = PDF::loadView('pdfs.invoice', compact('cambio'));
+    return view('pdfs.invoice', compact('cambio'));
+});
 
 Route::group(['middleware' => ['cors']], function () {
     Auth::routes();
@@ -54,6 +63,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('cambios', [CambioController::class, 'index']);
     Route::get('print-cambio', [CambioController::class, 'printCambio']);
     Route::post('custom/cambios/update', [CambioController::class, 'update']);
+    Route::get('cambios/{id}', [CambioController::class, 'show']);
 
 
 

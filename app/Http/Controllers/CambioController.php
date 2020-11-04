@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Cambio;
 use App\Models\Devolucioncambio;
 use App\Models\Logsistema;
+use App\Models\MotivoDevolucion;
+use App\Models\Motivodevolucioncambio;
 use App\Traits\GenerateCode;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use \Barryvdh\DomPDF\Facade as PDF;
-use finfo;
 
 class CambioController extends Controller
 {
@@ -22,37 +23,20 @@ class CambioController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-//     SELECT
-//     Id_Cambio,
-//     Codigo,
-//     Fecha,
-//     Id_Caja,
-//     Id_Oficina,
-//     (IFNULL( (SELECT Nombre FROM Moneda WHERE Id_Moneda = Moneda_Origen AND Estado = 'Activa'), 'Moneda Inexistente')) AS Moneda_Origen,
-//     (IFNULL( (SELECT Nombre FROM Moneda WHERE Id_Moneda = Moneda_Destino AND Estado = 'Activa'), 'Moneda Inexistente')) AS Moneda_Destino,
-//     (IFNULL( (SELECT Codigo FROM Moneda WHERE Id_Moneda = Moneda_Origen AND Estado = 'Activa'), 'Codigo Inexistente')) AS Codigo_Moneda_Origen,
-//     (IFNULL( (SELECT Codigo FROM Moneda WHERE Id_Moneda = Moneda_Destino AND Estado = 'Activa'), 'Codigo Inexistente')) AS Codigo_Moneda_Destino,
-//     Tasa,
-//     (Valor_Destino - (SELECT SUM(valor_recibido) FROM devolucioncambios WHERE cambio_id =	34))  As Valor_Destino,
-//     Valor_Origen,
-//     TotalPago,
-//     Vueltos,
-//     Recibido,
-//     Tipo,
-    
-//     T.Nombre,
-//     T.Id_Tercero
-    
-// FROM Cambio c
-// LEFT JOIN Tercero AS T ON c.Tercero_id = T.Id_Tercero
-// WHERE Id_Cambio = 34
 
     public function index()
     {
         try {
-            return  response()->json(['codigo' => 'success', 'query_data' => Cambio::whereDate('Fecha', Carbon::today())->where('Identificacion_Funcionario', request()->get('funcionario'))->get()]);
+            $query_data = DB::table('Cambio As c')
+                ->select('c.*', 'dc.valor_recibido', DB::raw('(c.Valor_Destino - dc.valor_recibido) As venta_final'))
+                ->leftJoin('devolucioncambios As dc', 'c.Id_Cambio', '=', 'dc.cambio_id')
+                ->whereDate('Fecha', Carbon::today())
+                ->where('Identificacion_Funcionario', '1524854')
+                ->get();
+
+            return response()->json(['codigo' => 'success', 'query_data' => $query_data]);
         } catch (\Throwable $th) {
-            throw $th;
+            return $th->getMessage();
         }
     }
 
@@ -122,9 +106,9 @@ class CambioController extends Controller
      * @param  \App\Models\Cambio  $cambio
      * @return \Illuminate\Http\Response
      */
-    public function show(Cambio $cambio)
+    public function show(Cambio $cambio, $id)
     {
-        //    En  original backend
+        return response()->json(['cambio' => Cambio::with('tercero')->findOrFail($id), 'motivos' => Motivodevolucioncambio::all()]);
     }
 
     /**
@@ -147,7 +131,6 @@ class CambioController extends Controller
      */
     public function update(Request $request, Cambio $cambio)
     {
-      
     }
 
     /**
@@ -163,7 +146,8 @@ class CambioController extends Controller
 
     public function printCambio()
     {
-        $pdf = PDF::loadView('pdfs.invoice');
+        $cambio = Cambio::with('tercero')->findOrFail(request()->get('id'));
+        $pdf = PDF::loadView('pdfs.invoice', compact('cambio'));
         return $pdf->stream('invoice.pdf');
     }
 }

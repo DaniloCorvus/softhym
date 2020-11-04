@@ -37,4 +37,9 @@ class Cambio extends Model
     {
         return $this->hasMany(Devolucioncambio::class, 'cambio_id', 'Id_Cambio');
     }
+    public function tercero()
+    {
+                                            /**   tabla del relacionado       tabla donde estoy parado */
+        return $this->belongsTo(Tercero::class, 'Id_Tercero',                     'Tercero_id');
+    }
 }
