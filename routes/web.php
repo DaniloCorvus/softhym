@@ -33,9 +33,12 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/tess', function () {
-    $cambio = Cambio::with('tercero')->findOrFail(request()->get('id'));
+    return 'Hi';
+
+    // $cambio = Cambio::with('tercero')->findOrFail(request()->get('id'));
     // $pdf = PDF::loadView('pdfs.invoice', compact('cambio'));
-    return view('pdfs.invoice', compact('cambio'));
+    // return view('pdfs.invoice', compact('cambio'));
+    
 });
 
 Route::group(['middleware' => ['cors']], function () {
