@@ -26,12 +26,13 @@ class CambioController extends Controller
 
     public function index()
     {
+
         try {
             $query_data = DB::table('Cambio As c')
                 ->select('c.*', 'dc.valor_recibido', DB::raw('(c.Valor_Destino - dc.valor_recibido) As venta_final'))
                 ->leftJoin('devolucioncambios As dc', 'c.Id_Cambio', '=', 'dc.cambio_id')
                 ->whereDate('Fecha', Carbon::today())
-                ->where('Identificacion_Funcionario', '1524854')
+                ->where('Identificacion_Funcionario', request()->get('funcionario'))
                 ->get();
 
             return response()->json(['codigo' => 'success', 'query_data' => $query_data]);

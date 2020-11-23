@@ -13,6 +13,7 @@ use App\Http\Controllers\TerceroController;
 use App\Models\Cambio;
 use App\Models\Configuracion;
 use App\Models\Devolucioncambio;
+use App\Models\Tercero;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -33,12 +34,16 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/tess', function () {
-    return 'Hi';
+    return Tercero::where('Id_Tercero',  'LIKE', '%'  . 123 . '%')
+        ->where('Tipo_Tercero', request()
+            ->get('tipo'))
+        ->take(10)
+        ->get();
 
     // $cambio = Cambio::with('tercero')->findOrFail(request()->get('id'));
     // $pdf = PDF::loadView('pdfs.invoice', compact('cambio'));
     // return view('pdfs.invoice', compact('cambio'));
-    
+
 });
 
 Route::group(['middleware' => ['cors']], function () {
