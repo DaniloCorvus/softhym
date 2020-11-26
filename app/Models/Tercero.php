@@ -9,4 +9,5 @@ class Tercero extends Model
 {
     use HasFactory;
     protected $table = "Tercero";
+    public $primaryKey = "Id_Tercero";
 }

@@ -9,4 +9,5 @@ class Moneda extends Model
 {
     use HasFactory;
     protected $table = 'Moneda';
+    public $primaryKey = 'Id_Moneda';
 }

@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\CambioController;
+use App\Http\Controllers\CierreCajaController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\DevolucioncambioController;
+use App\Http\Controllers\EgresoController;
 use App\Http\Controllers\FomapagoController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\GenericoController;
+use App\Http\Controllers\GiroRemitenteController;
 use App\Http\Controllers\MonedaController;
 use App\Http\Controllers\MotivodevolucioncambioController;
 use App\Http\Controllers\PaisController;
@@ -13,6 +16,7 @@ use App\Http\Controllers\TerceroController;
 use App\Models\Cambio;
 use App\Models\Configuracion;
 use App\Models\Devolucioncambio;
+use App\Models\GiroRemitente;
 use App\Models\Tercero;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Auth;
@@ -20,30 +24,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 
-// Route::get('/conf', function () {
-//     $index = 'Cambio';
-//     $confi = Configuracion::first();
-//     $confi->$index = $confi[$index] + 1;
-//     $confi->save();
-//     return  $confi["Prefijo_" . $index] . sprintf("%05d", $confi[$index]);
-// });
-
-// Route::get('/pass', function () {
-//     return Hash::make('password');
-// });
-
-
-Route::get('/tess', function () {
-    return Tercero::where('Id_Tercero',  'LIKE', '%'  . 123 . '%')
-        ->where('Tipo_Tercero', request()
-            ->get('tipo'))
-        ->take(10)
-        ->get();
-
-    // $cambio = Cambio::with('tercero')->findOrFail(request()->get('id'));
-    // $pdf = PDF::loadView('pdfs.invoice', compact('cambio'));
-    // return view('pdfs.invoice', compact('cambio'));
-
+Route::get('my', function () {
+    $modulo = 'Cambio';
+    $index = $modulo;
+    $confi = Configuracion::first();
+    $confi->$index = $confi[$index] + 1;
+    $confi->save();
+    return  $confi["Prefijo_" . $index] . sprintf("%05d", $confi[$index]);
 });
 
 Route::group(['middleware' => ['cors']], function () {
@@ -59,10 +46,11 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('genericos/tipo-documento-nacionales', [GenericoController::class, 'tipoDocumentoNacionales']);
 
     //Cuentas bancarias
-    Route::get('cuentasbancarias/buscar-cuentas-bancarias-por-moneda', [CuentaBancariaController::class, 'buscar']);
+    // Route::get('cuentasbancarias/buscar-cuentas-bancarias-por-moneda', [CuentaBancariaController::class, 'buscar']);
     //Terceros
     Route::get('terceros-filter', [TerceroController::class, 'filter']);
     Route::get('terceros', [TerceroController::class, 'index']);
+    Route::get('terceros/filter/{tipos}', [TerceroController::class, 'tercerosFilter']);
     //Forma de pago 
     Route::get('foma-pago', [FomapagoController::class, 'index']);
 
@@ -82,4 +70,9 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::post('devolucion/store', [DevolucioncambioController::class, 'store']);
     Route::get('devoluciones/show/{Id_Cambio}', [DevolucioncambioController::class, 'show']);
+
+    Route::resource('remitentes', GiroRemitenteController::class);
+    Route::resource('egresos', EgresoController::class);
+
+    Route::get('cierre-caja', [CierreCajaController::class, 'getInfo']);
 });

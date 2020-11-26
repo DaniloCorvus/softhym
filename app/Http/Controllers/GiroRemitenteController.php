@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\GiroRemitente;
 use Illuminate\Http\Request;
 
+use function GuzzleHttp\Promise\all;
+
 class GiroRemitenteController extends Controller
 {
     /**
@@ -14,7 +16,6 @@ class GiroRemitenteController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -35,7 +36,10 @@ class GiroRemitenteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = json_decode(request()->get('modelo'));
+        // return response()->json($data, 500);
+        $data->Documento_Remitente = $data->Id_Transferencia_Remitente;
+        return GiroRemitente::create((array)$data);
     }
 
     /**

@@ -92,4 +92,11 @@ class TerceroController extends Controller
         }
         return response()->json(Tercero::where('Id_Tercero',  'LIKE', '%'  . $filtro . '%')->where('Tipo_Tercero', request()->all('tipo'))->take(10)->get());
     }
+
+
+
+    public function tercerosFilter($filter)
+    {
+        return response()->json(Tercero::where('Tipo_Tercero', $filter)->get());
+    }
 }

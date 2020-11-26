@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Traslado extends Model
 {
     use HasFactory;
+
+    protected  $table = 'Traslado';
+
+    public function moneda()
+    {
+        return $this->hasOne(Moneda::class, 'Id_Moneda', 'Moneda');
+    }
 }
