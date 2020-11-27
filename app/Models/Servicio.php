@@ -13,6 +13,6 @@ class Servicio extends Model
 
     public function moneda()
     {
-        return $this->hasOne(Moneda::class, 'Id_Moneda', 'Moneda');
+        return $this->hasOne(Moneda::class, 'Id_Moneda', 'Id_Moneda');
     }
 }
