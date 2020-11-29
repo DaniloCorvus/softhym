@@ -228,7 +228,7 @@ class CierreCajaController extends Controller
 
     public function getMonedas()
     {
-        return Moneda::all();
+        return Moneda::where('Estado', 'Activa')->get();
     }
     public function getFecha()
     {
