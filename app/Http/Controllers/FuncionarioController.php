@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Diario;
 use App\Models\Funcionario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use function GuzzleHttp\Promise\all;
 
 class FuncionarioController extends Controller
 {
@@ -91,5 +94,19 @@ class FuncionarioController extends Controller
     public function destroy(Funcionario $funcionario)
     {
         //
+    }
+
+    /**
+     * Se actualiza el estado de la caja del funcionario recibido
+     * @param \App\Models\Funcionario  $funcionario
+     * @return \Illuminate\Http\Response
+     */
+    public function estadoCaja()
+    {
+        return (Diario::where('Id_Funcionario', request()->get('id'))
+                ->orderBy('Id_Diario', 'Desc')
+                ->first()
+                ->delete())
+            ?  response()->json('Caja abierta Correctamente') : response()->json('Imposible abrir Caja');
     }
 }

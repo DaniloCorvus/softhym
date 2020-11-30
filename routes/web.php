@@ -16,6 +16,7 @@ use App\Http\Controllers\TerceroController;
 use App\Models\Cambio;
 use App\Models\Configuracion;
 use App\Models\Devolucioncambio;
+use App\Models\Funcionario;
 use App\Models\GiroRemitente;
 use App\Models\Tercero;
 use Barryvdh\DomPDF\PDF;
@@ -75,4 +76,5 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('egresos', EgresoController::class);
 
     Route::get('cierre-caja', [CierreCajaController::class, 'getInfo']);
+    Route::post('cierre-caja/funcionario', [FuncionarioController::class, 'estadoCaja']);
 });
