@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\DB;
 
 class CierreCajaController extends Controller
 {
-    public $id;
+    public $id = 1524854;
     public $result = [];
 
     public function  getInfo()
     {
 
-        $this->id = request()->get("id");
+        // $this->id = request()->get("id");
 
         $Monedas = $this->getMonedas();
         $resultado = collect();
@@ -120,7 +120,7 @@ class CierreCajaController extends Controller
             })
             ->when('Id_Cajero_Origen',  function ($q) {
                 $q->where('Funcionario_Destino', $this->id)
-                    ->select(DB::raw('IF(sum(Valor) > 0, sum(Valor), 0) AS Engreso_Total,  "Traslados" as Nombre'))
+                    ->select(DB::raw('IF(sum(Valor) > 0, sum(Valor), 0) AS Egreso_Total,  "Traslados" as Nombre'))
                     ->groupByRaw('Id_Moneda');
             })
             ->where('Estado', 'Aprobado')

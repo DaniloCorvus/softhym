@@ -37,9 +37,9 @@ class GiroRemitenteController extends Controller
     public function store(Request $request)
     {
         $data = json_decode(request()->get('modelo'));
-        // return response()->json($data, 500);
         $data->Documento_Remitente = $data->Id_Transferencia_Remitente;
-        return GiroRemitente::create((array)$data);
+        GiroRemitente::create((array)$data);
+        return response()->json(['codigo' => 'success', 'titulo' => 'Exito', 'mensaje' => 'Remitente creado correctamente']);
     }
 
     /**
