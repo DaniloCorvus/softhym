@@ -69,7 +69,15 @@ class CorresponsalController extends Controller
      */
     public function update(Request $request, Corresponsal $corresponsal)
     {
-        //
+        $data = json_decode(request()->get('datos'));
+
+        $corresponsal = Corresponsal::where('Id_Corresponsal_Bancario', $data->Id_Corresponsal_Bancario)->first();
+        $corresponsal->Id_Municipio = $data->Municipio;
+        $corresponsal->Id_Departamento = $data->Departamento;
+        $corresponsal->Cupo = $data->Cupo;
+        $corresponsal->Nombre = $data->Nombre;
+        $corresponsal->save();
+        return response()->json(['codigo' => 'success', 'titulo' => 'Exito', 'mensaje' => 'Corresponsal actualizado correctamente']);
     }
 
     /**

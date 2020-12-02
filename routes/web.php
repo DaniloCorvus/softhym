@@ -3,6 +3,7 @@
 use App\Http\Controllers\CambioController;
 use App\Http\Controllers\CierreCajaController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\CorresponsalController;
 use App\Http\Controllers\DevolucioncambioController;
 use App\Http\Controllers\EgresoController;
 use App\Http\Controllers\FomapagoController;
@@ -77,4 +78,6 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::get('cierre-caja', [CierreCajaController::class, 'getInfo']);
     Route::post('cierre-caja/funcionario', [FuncionarioController::class, 'estadoCaja']);
+
+    Route::post('corresponsales/update', [CorresponsalController::class, 'update']);
 });
