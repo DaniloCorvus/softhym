@@ -67,9 +67,12 @@ class CorresponsalController extends Controller
      * @param  \App\Models\Corresponsal  $corresponsal
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Corresponsal $corresponsal)
+    public function update(Request $request)
     {
-        //
+        // return 'Hola mundo';
+        // $data = request()->all();
+        // $data = request()->all();
+        return gettype(request()->get('datos'));
     }
 
     /**
