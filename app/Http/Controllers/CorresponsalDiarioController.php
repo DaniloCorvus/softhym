@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CorresponsalDiario;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CorresponsalDiarioController extends Controller
@@ -67,9 +68,15 @@ class CorresponsalDiarioController extends Controller
      * @param  \App\Models\CorresponsalDiario  $corresponsalDiario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CorresponsalDiario $corresponsalDiario)
+    public function update(Request $request): JsonResponse
     {
-        //
+        try {
+            $corresponsal = CorresponsalDiario::where('Id_Corresponsal_Diario', request()->get('Id_Corresponsal_Diario'))->first();
+            $corresponsal->update(request()->all());
+            return response()->json(['codigo' => 'success', 'titulo' => 'Exito', 'mensaje' => 'Update correcto']);
+        } catch (\Throwable $th) {
+            return response()->json(['codigo' => 'warning', 'titulo' => 'Alerta', 'mensaje' => $th->getMessage()]);
+        }
     }
 
     /**

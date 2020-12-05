@@ -4,6 +4,7 @@ use App\Http\Controllers\CambioController;
 use App\Http\Controllers\CierreCajaController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\CorresponsalController;
+use App\Http\Controllers\CorresponsalDiarioController;
 use App\Http\Controllers\DevolucioncambioController;
 use App\Http\Controllers\EgresoController;
 use App\Http\Controllers\FomapagoController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\PaisController;
 use App\Http\Controllers\TerceroController;
 use App\Models\Cambio;
 use App\Models\Configuracion;
+use App\Models\CorresponsalDiario;
 use App\Models\Devolucioncambio;
 use App\Models\Funcionario;
 use App\Models\GiroRemitente;
@@ -36,6 +38,7 @@ Route::get('my', function () {
 });
 
 Route::group(['middleware' => ['cors']], function () {
+
     Auth::routes();
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     //Funcionarios 
@@ -80,4 +83,5 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('cierre-caja/funcionario', [FuncionarioController::class, 'estadoCaja']);
 
     Route::post('corresponsales/update', [CorresponsalController::class, 'update']);
+    Route::put('corresponsales-diarios/update', [CorresponsalDiarioController::class, 'update']);
 });

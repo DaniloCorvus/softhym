@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Corresponsal;
+use Facade\FlareClient\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CorresponsalController extends Controller
