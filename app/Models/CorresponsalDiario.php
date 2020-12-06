@@ -10,6 +10,20 @@ class CorresponsalDiario extends Model
     use HasFactory;
 
     protected  $table = 'Corresponsal_Diario_Nuevo';
+    public $primaryKey = 'Id_Corresponsal_Bancario';
+    protected $fillable = [
+        'Consignacion',
+        'Fecha',
+        'Hora',
+        'Id_Caja',
+        'Id_Corresponsal_Bancario',
+        'Id_Corresponsal_Diario',
+        'Id_Moneda',
+        'Id_Oficina',
+        'Identificacion_Funcionario',
+        'Retiro',
+        'Total_Corresponsal',
+    ];
 
     public function moneda()
     {
