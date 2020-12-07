@@ -19,11 +19,13 @@ class CierreCajaController extends Controller
 
     public function  getInfo()
     {
+        // return response()->json($this->getMonedas());
 
         // $this->id = request()->get("id");
 
         $Monedas = $this->getMonedas();
         $resultado = collect();
+
 
         foreach ($Monedas as $moneda) {
 
@@ -36,7 +38,7 @@ class CierreCajaController extends Controller
             $movimientos[] = $this->ConsultarIngresosEgresosTransferencias($moneda->Id_Moneda);
             $movimientos[] = $this->ConsultarIngresosEgresosGiros($moneda->Id_Moneda);
             $movimientos[] = $this->ConsultarIngresosEgresosTraslados($moneda->Id_Moneda);
-            $movimientos[] = $this->ConsultarIngresosEgresosCorresponsal($moneda->Id_Moneda);
+            // $movimientos[] = $this->ConsultarIngresosEgresosCorresponsal($moneda->Id_Moneda);
             $movimientos[] = $this->ConsultarIngresosEgresosServicios($moneda->Id_Moneda);
 
             $data["Movimientos"] = $movimientos;
@@ -70,7 +72,7 @@ class CierreCajaController extends Controller
 
         $transferencias =   Transferencia::where('Moneda_Origen', $Id_Moneda)
 
-            // ->where('Fecha', $this->getFecha())
+            ->where('Fecha', $this->getFecha())
             ->where('Identificacion_Funcionario', $this->id)
             ->where('Estado',  'Activa')
             ->orWhere('Estado',  'Pagada')
@@ -93,7 +95,7 @@ class CierreCajaController extends Controller
             ->with('moneda', function ($q) {
                 $q->select('Codigo', 'Id_Moneda', 'Nombre as Moneda');
             })
-            // ->where('Fecha', $this->getFecha())
+            ->where('Fecha', $this->getFecha())
             ->where('Identificacion_Funcionario', $this->id)
             ->where('Estado', '<>', 'Anulado')
             ->select(
@@ -113,17 +115,17 @@ class CierreCajaController extends Controller
                 $q->select('Codigo', 'Id_Moneda', 'Nombre as Moneda');
             })
             // ->where('Fecha', $this->getFecha())
-            ->when('Funcionario_Destino',  function ($q) {
-                $q->where('Funcionario_Destino', $this->id)
-                    ->select(DB::raw('IF(sum(Valor) > 0, sum(Valor_Total), 0) AS Ingreso_Total, "Traslados" as Nombre'))
-                    ->groupByRaw('Id_Moneda');
-            })
-            ->when('Id_Cajero_Origen',  function ($q) {
-                $q->where('Funcionario_Destino', $this->id)
-                    ->select(DB::raw('IF(sum(Valor) > 0, sum(Valor), 0) AS Egreso_Total,  "Traslados" as Nombre'))
-                    ->groupByRaw('Id_Moneda');
-            })
-            ->where('Estado', 'Aprobado')
+            // ->when('Funcionario_Destino',  function ($q) {
+            //     $q->where('Funcionario_Destino', $this->id)
+            //         ->select(DB::raw('IF(sum(Valor) > 0, sum(Valor_Total), 0) AS Ingreso_Total, "Traslados" as Nombre'))
+            //         ->groupByRaw('Id_Moneda');
+            // })
+            // ->when('Id_Cajero_Origen',  function ($q) {
+            //     $q->where('Funcionario_Destino', $this->id)
+            //         ->select(DB::raw('IF(sum(Valor) > 0, sum(Valor), 0) AS Egreso_Total,  "Traslados" as Nombre'))
+            //         ->groupByRaw('Id_Moneda');
+            // })
+            // ->where('Estado', 'Aprobado')
             ->first();
 
 
@@ -138,12 +140,12 @@ class CierreCajaController extends Controller
                 $q->select('Codigo', 'Id_Moneda', 'Nombre as Moneda');
             })
             // ->where('Fecha', $this->getFecha())
-            ->where('Identificacion_Funcionario', $this->id)
-            ->select(
-                DB::raw('IF(sum(Consignacion) > 0, sum(Consignacion), 0) AS Ingreso_Total,  "Corresponsal" as Nombre'),
-                DB::raw('IF(sum(Retiro) > 0, sum(Retiro), 0) AS Engreso_Total')
-            )
-            ->groupByRaw('Id_Moneda')
+            // ->where('Identificacion_Funcionario', $this->id)
+            // ->select(
+            //     DB::raw('IF(sum(Consignacion) > 0, sum(Consignacion), 0) AS Ingreso_Total,  "Corresponsal" as Nombre'),
+            //     DB::raw('IF(sum(Retiro) > 0, sum(Retiro), 0) AS Engreso_Total')
+            // )
+            // ->groupByRaw('Id_Moneda')
             ->first();
 
         return (!$corresponsales) ?  ['Ingreso_Total' => '0', 'Nombre' => 'Corresponsal', 'Egreso_Total' => '0'] : $corresponsales;
@@ -155,7 +157,7 @@ class CierreCajaController extends Controller
             ->with('moneda', function ($q) {
                 $q->select('Codigo', 'Id_Moneda', 'Nombre as Moneda');
             })
-            // ->where('Fecha', $this->getFecha())
+            ->where('Fecha', $this->getFecha())
             ->where('Identificacion_Funcionario', $this->id)
             ->select(
                 DB::raw('IF(sum(Valor + Comision) > 0, sum(Valor + Comision), 0) AS Ingreso_Total, "Servicios" as Nombre '),
