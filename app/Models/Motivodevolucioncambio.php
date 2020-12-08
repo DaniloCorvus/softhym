@@ -11,5 +11,5 @@ class Motivodevolucioncambio extends Model
     protected $fillable = [
         'nombre'
     ];
-    protected $table = 'motivodevolucioncambios';
+    protected $table = 'Motivo_Devolucion_Cambios';
 }

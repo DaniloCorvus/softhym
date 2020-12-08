@@ -30,7 +30,7 @@ class CambioController extends Controller
         try {
             $query_data = DB::table('Cambio As c')
                 ->select('c.*', 'dc.valor_recibido', DB::raw('(c.Valor_Destino - dc.valor_recibido) As venta_final'))
-                ->leftJoin('devolucioncambios As dc', 'c.Id_Cambio', '=', 'dc.cambio_id')
+                ->leftJoin('Devolucion_Cambios As dc', 'c.Id_Cambio', '=', 'dc.cambio_id')
                 ->whereDate('Fecha', Carbon::today())
                 ->where('Identificacion_Funcionario', request()->get('funcionario'))
                 ->get();
