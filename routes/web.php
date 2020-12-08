@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CajeroController;
 use App\Http\Controllers\CambioController;
 use App\Http\Controllers\CierreCajaController;
 use App\Http\Controllers\ConfiguracionController;
@@ -84,4 +85,7 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::post('corresponsales/update', [CorresponsalController::class, 'update']);
     Route::put('corresponsales-diarios/update', [CorresponsalDiarioController::class, 'update']);
+
+    //Cajeros
+    Route::get('filtrar-cajeros', [CajeroController::class, 'filtro']);
 });

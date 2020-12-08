@@ -13,7 +13,7 @@ class CreateDevolucioncambiosTable extends Migration
      */
     public function up()
     {
-        Schema::create('devolucioncambios', function (Blueprint $table) {
+        Schema::create('Devolucion_Cambios', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateDevolucioncambiosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('devolucioncambios');
+        Schema::dropIfExists('Devolucion_Cambios');
     }
 }

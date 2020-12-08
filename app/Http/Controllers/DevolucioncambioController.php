@@ -41,7 +41,11 @@ class DevolucioncambioController extends Controller
     {
 
         $data = json_decode(request()->get('data'));
-        // return response()->json($data->Id_Cambio);
+
+        if (!isset($data->Observacion)) {
+            $data->Observacion = '';
+        }
+        
         $devolucion =     Devolucioncambio::create([
             'hora' => Carbon::now(),
             'cambio_id' => $data->Id_Cambio,

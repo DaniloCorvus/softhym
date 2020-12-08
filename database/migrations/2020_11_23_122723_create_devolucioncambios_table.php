@@ -13,7 +13,7 @@ class CreateDevolucioncambiosTable extends Migration
      */
     public function up()
     {
-        Schema::create('devolucioncambios', function (Blueprint $table) {
+        Schema::create('Devolucion_Cambios', function (Blueprint $table) {
             $table->integer('id', true);
             $table->dateTime('hora');
             $table->text('observacion')->nullable();
@@ -33,6 +33,6 @@ class CreateDevolucioncambiosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('devolucioncambios');
+        Schema::dropIfExists('Devolucion_Cambios');
     }
 }

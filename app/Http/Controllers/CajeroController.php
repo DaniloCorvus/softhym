@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cajero;
+use App\Models\Funcionario;
 use Illuminate\Http\Request;
 
 class CajeroController extends Controller
@@ -81,5 +82,21 @@ class CajeroController extends Controller
     public function destroy(Cajero $cajero)
     {
         //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Cajero  $cajero
+     * @return \Illuminate\Http\Response
+     */
+    public function filtro(Cajero $cajero)
+    {
+        try {
+            $funcionario = Funcionario::select('Nombres as Nombre', 'Identificacion_Funcionario')->where('Identificacion_Funcionario', 'LIKE', '%' . request()->get('match') . '%')->get();
+            return response()->json($funcionario);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 500);
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CuentaBancaria;
 use App\Models\Tercero;
 use Illuminate\Http\Request;
 
@@ -86,6 +87,10 @@ class TerceroController extends Controller
     public function filter()
     {
         $filtro = request()->get('id_destinatario');
+
+        if (request()->get('tipo') == 'Cuentas') {
+            return response()->json(CuentaBancaria::where('Numero_Cuenta',  'LIKE', '%'  . $filtro . '%')->where('Id_Pais', 2)->take(10)->get());
+        }
 
         if ($filtro == 0) {
             return response()->json(Tercero::where('Nombre',  'LIKE', '%'  . $filtro . '%')->where('Tipo_Tercero', request()->all('tipo'))->take(10)->get());

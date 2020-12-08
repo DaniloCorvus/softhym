@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Devolucioncambio extends Model
 {
+
     use HasFactory;
+    protected $table = 'Devolucion_Cambios';
     protected $fillable = [
         'hora',
         'observacion',
