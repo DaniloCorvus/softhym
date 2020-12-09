@@ -9,7 +9,9 @@ class Devolucioncambio extends Model
 {
 
     use HasFactory;
-    protected $table = 'Devolucion_Cambios';
+
+    protected  $table = 'Devolucion_Cambios';
+
     protected $fillable = [
         'hora',
         'observacion',
