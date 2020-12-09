@@ -82,6 +82,8 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::get('cierre-caja', [CierreCajaController::class, 'getInfo']);
     Route::post('cierre-caja/funcionario', [FuncionarioController::class, 'estadoCaja']);
+    
+    Route::post('cierre-caja/guardar', [CierreCajaController::class, 'guardarCierre']);
 
     Route::post('corresponsales/update', [CorresponsalController::class, 'update']);
     Route::put('corresponsales-diarios/update', [CorresponsalDiarioController::class, 'update']);

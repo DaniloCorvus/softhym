@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cambio;
 use App\Models\CorresponsalDiario;
+use App\Models\Diario;
+use App\Models\DiarioMonedaCierre;
 use App\Models\Giro;
 use App\Models\Moneda;
 use App\Models\Servicio;
@@ -14,15 +16,13 @@ use Illuminate\Support\Facades\DB;
 
 class CierreCajaController extends Controller
 {
-    public $id = 1524854;
+    public $id = 9999999;
     public $result = [];
 
     public function  getInfo()
     {
-        // return response()->json($this->getMonedas());
 
-        // $this->id = request()->get("id");
-
+        $this->id = request()->get("id");
         $Monedas = $this->getMonedas();
         $resultado = collect();
 
@@ -46,6 +46,35 @@ class CierreCajaController extends Controller
         }
 
         return response()->json($resultado);
+    }
+
+    public function  getDataByCierre()
+    {
+
+        $this->id = request()->get("id");
+        $Monedas = $this->getMonedas();
+        $resultado = collect();
+
+
+        foreach ($Monedas as $moneda) {
+
+            $data["Nombre"] = $moneda->Nombre;
+            $data["Codigo"] = $moneda->Codigo;
+            $data["Id"] = $moneda->Id_Moneda;
+            $movimientos = [];
+
+            $movimientos[] = $this->ConsultarIngresosEgresosCambios($moneda->Id_Moneda);
+            $movimientos[] = $this->ConsultarIngresosEgresosTransferencias($moneda->Id_Moneda);
+            $movimientos[] = $this->ConsultarIngresosEgresosGiros($moneda->Id_Moneda);
+            $movimientos[] = $this->ConsultarIngresosEgresosTraslados($moneda->Id_Moneda);
+            $movimientos[] = $this->ConsultarIngresosEgresosCorresponsal($moneda->Id_Moneda);
+            $movimientos[] = $this->ConsultarIngresosEgresosServicios($moneda->Id_Moneda);
+
+            $data["Movimientos"] = $movimientos;
+            $resultado->push($data);
+        }
+
+        return $resultado;
     }
 
 
@@ -168,5 +197,55 @@ class CierreCajaController extends Controller
     public function getFecha()
     {
         return Carbon::now();
+    }
+
+    public function guardarCierre()
+    {
+        $hoy = Carbon::now()->format('Y-m-d');
+        $hora = Carbon::now()->format('h:mm:ss');
+        try {
+            $diarios = Diario::where('Fecha',  $hoy)->where('Hora_Cierre', '00:00:00')->get();
+            foreach ($diarios as $diario) {
+                if ($diario != null) {
+                    $this->ActualizarDiario($diario);
+                    $this->GuardarValoresCierre($diario);
+                }
+            }
+            $response['tipo'] = 'success';
+            $response['mensaje'] = 'Cierre satisfactorio!';
+            echo json_encode($response);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage());
+        }
+    }
+
+    function ActualizarDiario($diario)
+    {
+        $diario->update([
+            'Oficina_Cierre' => strval($diario->Oficina_Apertura),
+            'Caja_Cierre' => strval($diario->Caja_Apertura),
+            'Observacion' => 'Cierre automatico',
+            'Hora_Cierre' => Carbon::now()->format('h:mm:ss')
+        ]);
+    }
+
+    function GuardarValoresCierre($diario)
+    {
+        foreach ($this->getDataByCierre() as  $moneda) {
+            $egresos = 0;
+            $ingresos = 0;
+            foreach ($moneda['Movimientos'] as $movimiento) {
+                $egresos =  $egresos +  $movimiento['Egreso_Total'];
+                $ingresos = $ingresos  +  $movimiento['Ingreso_Total'];
+            };
+
+            DiarioMonedaCierre::create([
+                'Id_Diario' => $diario['Id_Diario'],
+                'Id_Moneda' => $moneda['Id'],
+                'Valor_Moneda_Cierre' =>  $ingresos - $egresos,
+                'Valor_Diferencia' => 0,
+                'Fecha_Registro' => Carbon::now(),
+            ]);
+        }
     }
 }
