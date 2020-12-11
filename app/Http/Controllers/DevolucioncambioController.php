@@ -54,8 +54,11 @@ class DevolucioncambioController extends Controller
 
         $saldo = $q->venta_final ? $q->venta_final : 0;
 
-        if ($saldo <  $data->Valor_Devolver ||  count($cambio->devolucioncambios) > 0) {
-            return response()->json(['codigo' => 'warning']);
+        if ($saldo <  $data->Valor_Devolver) {
+            return response()->json(['codigo' => 404, 'message' => 'El valor a devolver supera el valor original']);
+        }
+        if (count($cambio->devolucioncambios) > 0) {
+            return response()->json(['codigo' => 404, 'message' => 'Este movimiento ya tiene devoluciones']);
         }
 
         if (!isset($data->Observacion)) {
