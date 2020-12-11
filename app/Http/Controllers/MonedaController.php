@@ -15,7 +15,7 @@ class MonedaController extends Controller
     public function index()
     {
         if (request()->expectsJson()) {
-            return response()->json(Moneda::where('Estado', 'Activa')->get());
+            return response()->json(Moneda::with('ValorMoneda')->where('Estado', 'Activa')->get());
         }
     }
 
