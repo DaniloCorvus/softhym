@@ -29,8 +29,10 @@ class CambioController extends Controller
 
         try {
             $query_data = DB::table('Cambio As c')
-                ->select('c.*', 'dc.valor_recibido', DB::raw('(c.Valor_Destino - dc.valor_recibido) As venta_final'))
+                ->select('c.*', 'mo.Codigo as codigo_origen', 'md.Codigo as codigo_destino', 'dc.valor_recibido', DB::raw('(c.Valor_Destino - dc.valor_recibido) As venta_final'))
                 ->leftJoin('Devolucion_Cambios As dc', 'c.Id_Cambio', '=', 'dc.cambio_id')
+                ->Join('Moneda As mo', 'c.Moneda_Origen', '=', 'mo.Id_Moneda')
+                ->Join('Moneda As md', 'c.Moneda_Destino', '=', 'md.Id_Moneda')
                 ->whereDate('Fecha', Carbon::today())
                 ->where('Identificacion_Funcionario', request()->get('funcionario'))
                 ->get();
