@@ -47,28 +47,32 @@ class EgresoController extends Controller
         try {
 
 
-            $data = [];
+
+            // $data = [];
             $datos = (array)json_decode(request()->get('modelo'));
+
+            // return response()->json($datos);
+
             $datos['Fecha'] = Carbon::now();
             $datos['Codigo'] = $this->generateCod('Egreso');
             unset($datos['Id_Egreso'], $datos['Id_Grupo']);
             $data = $this->createFields($datos);
             $egreso = Egreso::create($data);
 
-            $dataMovimiento['Fecha'] =  $data['Fecha'];
-            $dataMovimiento['Valor']  =  $data['Valor'];
-            $dataMovimiento['Id_Moneda_Valor'] = $data['Id_Moneda'];
+            $dataMovimiento['Fecha'] =  $datos['Fecha'];
+            $dataMovimiento['Valor']  =  $datos['Valor'];
+            $dataMovimiento['Id_Moneda_Valor'] = $datos['Id_Moneda'];
             $dataMovimiento['Tipo'] = 'Egreso';
-            $dataMovimiento['Id_Tercero'] = $data['Id_Tercero'];
-            $dataMovimiento['Detalle'] = 'Egreso por ' . $data['Valor'] . ' ' . $this->GetCodigoMoneda($data['Id_Moneda']) . ' ' . ' con codigo ' . $data['Codigo'];
+            $dataMovimiento['Id_Tercero'] = $datos['Id_Tercero'];
+            $dataMovimiento['Detalle'] = 'Egreso por ' . $datos['Valor'] . ' ' . $this->GetCodigoMoneda($datos['Id_Moneda']) . ' ' . ' con codigo ' . $datos['Codigo'];
             $dataMovimiento['Id_Tipo_Movimiento'] = '6';
             $dataMovimiento['Valor_Tipo_Movimiento'] = $egreso->id;
             $dataMovimiento['Estado'] = 'Activo';
             $movimiento = MovimientoTercero::create($dataMovimiento);
 
             if ($datos['formaPago'] == 'credito') {
-                $tercero = Tercero::find($data['Id_Tercero']);
-                $tercero->Cupo =  (float)$tercero->Cupo - (float)$data['Valor'];
+                $tercero = Tercero::find($datos['Id_Tercero']);
+                $tercero->Cupo =  (float)$tercero->Cupo - (float)$datos['Valor'];
                 $tercero->save();
             }
 

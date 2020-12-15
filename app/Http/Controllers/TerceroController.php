@@ -89,7 +89,12 @@ class TerceroController extends Controller
         $filtro = request()->get('id_destinatario');
 
         if (request()->get('tipo') == 'Cuentas') {
-            return response()->json(CuentaBancaria::where('Numero_Cuenta',  'LIKE', '%'  . $filtro . '%')->where('Id_Pais', 2)->take(10)->get());
+            return response()->json(
+                CuentaBancaria::where('Numero_Cuenta',  'LIKE', '%'  . $filtro . '%')
+                    ->where('Id_Pais', 2)
+                    ->select('Nombre_Titular as Nombre', 'Numero_Cuenta as Id_Tercero')
+                    ->get()->take(10)
+            );
         }
 
         if ($filtro == 0) {
